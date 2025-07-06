@@ -15,7 +15,6 @@ const ResultBlock = ({
                          value,
                          currency,
                          dropDownItems,
-                         isSecondary = true,
                          secondaryCurrencies
                      }: BlockProps) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -24,8 +23,8 @@ const ResultBlock = ({
     const toggleDropDown = () => {
         setIsOpen((prev) => !prev);
     };
-
-    /** closing list w outside click */
+    console.log('Secondary carray',secondaryCurrencies)
+    /** closing a list w outside click */
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (blockRef.current && !blockRef.current.contains(event.target as Node)) {
@@ -63,8 +62,7 @@ const ResultBlock = ({
                     items={dropDownItems}
                     toggleDropDown={toggleDropDown}
                     onChangeCurrency={handleCurrencySelect}
-                    activeTab={isSecondary ? 'secondary' : 'primary'}
-                />
+                    activeTab={'secondary'}                />
             </div>
             <input
                 className="input"

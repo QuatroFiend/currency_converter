@@ -12,7 +12,6 @@ const DropDown = ({
                       items,
                       toggleDropDown,
                       onChangeCurrency,
-                      activeTab = 'primary'
                   }: DropDownProps) => {
     return (
         <div className={'relative '}>

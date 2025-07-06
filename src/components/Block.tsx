@@ -4,9 +4,9 @@ import DropDown from "./DropDown.tsx";
 
 interface BlockProps {
     value: any;
-    currency: any;
+    currency: string;
     onChangeValue: any;
-    onChangeCurrency: any;
+    onChangeCurrency: (currency: string) => void;
     defaultCurrencies: string[];
     dropDownItems: string[];
    // onReplaceCurrency: any;
