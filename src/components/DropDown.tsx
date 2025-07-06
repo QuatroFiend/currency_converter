@@ -4,8 +4,7 @@ interface DropDownProps {
     isOpen: boolean;
     items: string[];
     toggleDropDown: () => void;
-    onChangeCurrency: any;
-    onReplaceCurrency: any;
+    onChangeCurrency?: (currency: string) => void;
     activeTab?: 'primary' | 'secondary';
 }
 const DropDown = ({
@@ -13,7 +12,6 @@ const DropDown = ({
                       items,
                       toggleDropDown,
                       onChangeCurrency,
-                      onReplaceCurrency,
                       activeTab = 'primary'
                   }: DropDownProps) => {
     return (
@@ -27,15 +25,16 @@ const DropDown = ({
                 <img src={arrow} alt="arrow" />
             </div>
             {isOpen && (
-                <ul className=' bg-[#444] w-[80px] absolute h-[210px] overflow-auto transition duration-200 ease-in-out rounded-[6px]'>
+                <ul className='bg-[#444] w-[80px] absolute h-[210px] overflow-auto transition duration-200 ease-in-out rounded-[6px] z-10'>
                     {items.map((i) => (
                         <li
-                            className={"px-[4px] flex hover:bg-[#747bff] cursor-pointer duration-200 ease-in-out 0"}
+                            className={"px-[4px] flex hover:bg-[#747bff] cursor-pointer duration-200 ease-in-out"}
                             key={i}
                             onClick={() => {
-                                onChangeCurrency(i);
-                                onReplaceCurrency(i, activeTab);
-                                toggleDropDown()
+                                if (onChangeCurrency) {
+                                    onChangeCurrency(i);
+                                }
+                                toggleDropDown();
                             }}
                         >
                             {i}

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Block} from "./Block.tsx";
+import ResultBlock from "./ResultBlock.tsx";
 
 interface RatesData {
     [key: string]: number;
@@ -8,102 +9,103 @@ interface RatesData {
 const CurrencyConverter: React.FC = () => {
     const [rates, setRates] = useState<RatesData>({});
     const itemsForDropDown = Object.keys(rates);
-    const [defaultCurrencies, setDefaultCurrencies] = useState(["USD", "PLN", "CZK", "AUD"]);
-    const [primaryCurrency, setPrimaryCurrency] = useState(defaultCurrencies[0]);
-    const [secondaryCurrency, setSecondaryCurrency] = useState(
-        defaultCurrencies[1]
-    );
+    const [primaryCurrencies, setPrimaryCurrencies] = useState(["USD", "PLN", "CZK", "AUD"]);
+    const [secondaryCurrencies,setSecondaryCurrencies]=useState(['PLN','BRL','CAD','DKK']);
+    const [primaryCurrency, setPrimaryCurrency] = useState(primaryCurrencies[0]);
+    const [secondaryCurrency, setSecondaryCurrency] = useState(secondaryCurrencies[0]);
     const [primaryValue, setPrimaryValue] = useState(0);
     const [secondaryValue, setSecondaryValue] = useState(0);
+    
     const [replacedCurrency, setReplacedCurrency] = useState('')
+    
     const [activeIndex, setActiveIndex] = useState<number>(0);
+    
     const changePrimaryValue = (value: number) => {
+        if (!rates[primaryCurrency] || !rates[secondaryCurrency]) return;
+
         const price = value / rates[primaryCurrency];
         const result = price * rates[secondaryCurrency];
-        setSecondaryValue(result);
+        setSecondaryValue(Number(result.toFixed(result*100%1 === 0 ? 0 : 2)));
         setPrimaryValue(value);
     };
 
-    const changeSecondaryValue = (value: number) => {
-        const result = (rates[primaryCurrency] / rates[secondaryCurrency]) * value;
-        setPrimaryValue(result);
-        setSecondaryValue(value);
-    };
     const onChangePrimaryCurrency = (cur: string) => {
         setPrimaryCurrency(cur);
-        changePrimaryValue(primaryValue)
-    }
+        recalculateValues(cur, secondaryCurrency, primaryValue);
+    };
+
+   
     const onChangeSecondaryCurrency = (cur: string) => {
         setSecondaryCurrency(cur);
-        changeSecondaryValue(secondaryValue)
-    }
-    const onReplaceCurrency = (value: string, activeTab: 'primary' | 'secondary' = 'primary') => {
-        console.log('onReplaceCurrency', value, activeTab);
-        setReplacedCurrency(value);
+        recalculateValues(primaryCurrency, cur, primaryValue);
+    };
+    
+    const recalculateValues = (primCurrency: string, secCurrency: string, value: number) => {
+        if (!rates[primCurrency] || !rates[secCurrency] || Object.keys(rates).length === 0) return;
 
-        const indexToReplace = defaultCurrencies.findIndex(curr => {
-            if (activeTab === 'primary') {
-                return curr === primaryCurrency;
-            } else {
-                return curr === secondaryCurrency;
-            }
-        });
-        setActiveIndex(indexToReplace !== -1 ? indexToReplace : 0);
-        if (activeTab === 'primary') {
-            setPrimaryCurrency(value);
-        } else {
-            setSecondaryCurrency(value);
-        }
-    }
-    console.log('replaced',replacedCurrency)
+     
+        const eurValue = value / rates[primCurrency];
+
+        const result = eurValue * rates[secCurrency];
+
+        const formattedResult = Number(result.toFixed(result*100%1 === 0 ? 0 : 2));
+        
+        setSecondaryValue(formattedResult);
+    };
+
     useEffect(() => {
         fetch("https://api.frankfurter.app/latest")
             .then((res) => res.json())
-            .then((data) => setRates(data.rates))
+            .then((data) => {
+                const updatedRates = {...data.rates, USD: 1};
+                setRates(updatedRates);
+                setTimeout(() => {
+                    recalculateValues(primaryCurrency, secondaryCurrency, primaryValue || 1);
+                }, 0);
+            })
             .catch((err) => {
                 console.warn(err);
-                alert("error");
+                alert("Ошибка загрузки курсов валют");
             });
     }, []);
-    useEffect(() => {
-        if (replacedCurrency !== '') {
-            setDefaultCurrencies(prevCurrencies => {
-                const newCurrencies = [...prevCurrencies];
-                newCurrencies[activeIndex] = replacedCurrency;
-                return newCurrencies;
-            });
+
+    /** recount from primary  */
+    useEffect(()=>{
+        if (Object.keys(rates).length > 0) {
+            recalculateValues(primaryCurrency, secondaryCurrency, primaryValue);
         }
-    }, [replacedCurrency, activeIndex])
+    },[primaryCurrency, primaryValue]);
 
+    /** recount from secondary */
     useEffect(()=>{
-        onChangePrimaryCurrency(primaryCurrency);
-    },[primaryCurrency,primaryValue])
+        if (Object.keys(rates).length > 0) {
+            recalculateValues(primaryCurrency, secondaryCurrency, primaryValue);
+        }
+    },[secondaryCurrency]);
 
+    
     useEffect(()=>{
-        onChangeSecondaryCurrency(secondaryCurrency);
+        setSecondaryValue(secondaryValue);
     },[secondaryCurrency,secondaryValue])
     return (
         <div className="block-container">
             <Block
                 currency={primaryCurrency}
-                onChangeCurrency={setPrimaryCurrency}
+                onChangeCurrency={onChangePrimaryCurrency}
                 onChangeValue={changePrimaryValue}
                 value={primaryValue}
-                defaultCurrencies={defaultCurrencies}
+                defaultCurrencies={primaryCurrencies}
                 dropDownItems={itemsForDropDown}
-                onReplaceCurrency={onReplaceCurrency}
                 isSecondary={false}
             />
             <div className="divider" />
-            <Block
+            <ResultBlock
                 currency={secondaryCurrency}
-                onChangeCurrency={setSecondaryCurrency}
-                onChangeValue={changeSecondaryValue}
+                onChangeCurrency={onChangeSecondaryCurrency}
                 value={secondaryValue}
-                defaultCurrencies={defaultCurrencies}
                 dropDownItems={itemsForDropDown}
-                onReplaceCurrency={onReplaceCurrency}
                 isSecondary={true}
+                secondaryCurrencies={secondaryCurrencies}
             />
         </div>
     );

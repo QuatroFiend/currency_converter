@@ -9,7 +9,7 @@ interface BlockProps {
     onChangeCurrency: any;
     defaultCurrencies: string[];
     dropDownItems: string[];
-    onReplaceCurrency: any;
+   // onReplaceCurrency: any;
     isSecondary?: boolean;
 }
 
@@ -21,7 +21,7 @@ export const Block = ({
                           value,
                           currency,
                           dropDownItems,
-                          onReplaceCurrency,
+                         // onReplaceCurrency,
                           isSecondary = false
                       }: BlockProps) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -58,7 +58,6 @@ export const Block = ({
                     items={dropDownItems}
                     toggleDropDown={toggleDropDown}
                     onChangeCurrency={onChangeCurrency}
-                    onReplaceCurrency={onReplaceCurrency}
                     activeTab={isSecondary ? 'secondary' : 'primary'}
                 />
             </ul>
