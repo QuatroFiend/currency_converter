@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {Block} from "./Block.tsx";
 import ResultBlock from "./ResultBlock.tsx";
+import {recalculateValues} from "../utils/recalculateValues.ts";
 
-interface RatesData {
+export type RatesData = {
     [key: string]: number;
 }
 
@@ -15,7 +16,6 @@ const CurrencyConverter: React.FC = () => {
     const [secondaryCurrency, setSecondaryCurrency] = useState('PLN');
     const [primaryValue, setPrimaryValue] = useState(0);
     const [secondaryValue, setSecondaryValue] = useState(0);
-    //const [activeIndex,setActiveIndex] = useState('');
     const changePrimaryValue = (value: number) => {
         if (!rates[primaryCurrency] || !rates[secondaryCurrency]) return;
         const price = value / rates[primaryCurrency];
@@ -26,41 +26,42 @@ const CurrencyConverter: React.FC = () => {
 
     const onChangePrimaryCurrency = (cur: string) => {
         setPrimaryCurrency(cur);
-        recalculateValues(cur, secondaryCurrency, primaryValue);
-        const newPrimaryCurrencies = [
-            cur,
-            ...primaryCurrencies.filter(item => item !== cur).slice(0, 3)       
-        ];
-        setPrimaryCurrencies(newPrimaryCurrencies);
-        //
-        // setPrimaryCurrency(cur);
-        // setActiveIndex(cur);
-        // recalculateValues(cur, secondaryCurrency, primaryValue)
-    };
-   ///console.log('ACTIVE INDEX',activeIndex,' ')  
-    const onChangeSecondaryCurrency = (cur: string) => {
-        const currentIndex = secondaryCurrencies.indexOf(secondaryCurrency);
-        setSecondaryCurrency(cur);
-        recalculateValues(primaryCurrency, cur, primaryValue);
-        if (currentIndex !== -1) {
-            const newSecondaryCurrencies = [
-                cur,
-                ...secondaryCurrencies.filter(item => item !== cur).slice(0, 3)
-            ];
-            newSecondaryCurrencies[currentIndex] = cur;
-            setSecondaryCurrencies(newSecondaryCurrencies);
-            console.log('Обновлен список вторичных валют:', secondaryCurrencies);
+        recalculateValues(cur, secondaryCurrency, primaryValue, rates, setSecondaryValue);
+      
+        if (primaryCurrencies.includes(cur)) return;
+        const updated=[...primaryCurrencies];
+        const activeIndex = updated.indexOf(primaryCurrency);
+        if(activeIndex !== -1){
+            updated[activeIndex] = cur;
+        }else{
+            updated.unshift(cur);
         }
+        const withoutDuplicates = updated.filter(
+            (item, index) => updated.indexOf(item) === index
+        );
+        setPrimaryCurrencies(withoutDuplicates.slice(0,4))
+    };
+    const onChangeSecondaryCurrency = (cur: string) => {
+        setSecondaryCurrency(cur);
+        recalculateValues(primaryCurrency, cur, primaryValue, rates, setSecondaryValue);
+        
+        if (secondaryCurrencies.includes(cur)) return;
+        
+        const updated = [...secondaryCurrencies];
+        
+        const activeIndex = updated.indexOf(secondaryCurrency);
+        if (activeIndex !== -1) {
+            updated[activeIndex] = cur;
+        } else {
+            /** if something was wrong we push to the start  */
+            updated.unshift(cur);
+        }
+        /** delete twins */
+        const withoutDuplicates = updated.filter((item, index) => updated.indexOf(item) === index);
+        
+        setSecondaryCurrencies(withoutDuplicates.slice(0, 4));
     };
 
-    const recalculateValues = (primCurrency: string, secCurrency: string, value: number) => {
-        if (!rates[primCurrency] || !rates[secCurrency] || Object.keys(rates).length === 0) return;
-        const eurValue = value / rates[primCurrency];
-        const result = eurValue * rates[secCurrency];
-        const formattedResult = Number(result.toFixed(result * 100 % 1 === 0 ? 0 : 2));
-        setSecondaryValue(formattedResult);
-        console.log(`Конвертация: ${value} ${primCurrency} = ${formattedResult} ${secCurrency}`);
-    };
     useEffect(() => {
         fetch("https://api.frankfurter.app/latest")
             .then((res) => res.json())
@@ -68,7 +69,7 @@ const CurrencyConverter: React.FC = () => {
                 const updatedRates = {...data.rates, USD: 1};
                 setRates(updatedRates);
                 setTimeout(() => {
-                    recalculateValues(primaryCurrency, secondaryCurrency, primaryValue || 1);
+                    recalculateValues(primaryCurrency, secondaryCurrency, primaryValue || 1, rates, setSecondaryValue);
                 }, 0);
             })
             .catch((err) => {
@@ -80,7 +81,7 @@ const CurrencyConverter: React.FC = () => {
     /** recount from primary  */
     useEffect(() => {
         if (Object.keys(rates).length > 0) {
-            recalculateValues(primaryCurrency, secondaryCurrency, primaryValue);
+            recalculateValues(primaryCurrency, secondaryCurrency, primaryValue, rates, setSecondaryValue);
         }
     }, [primaryCurrency, secondaryCurrency, primaryValue, rates]);
 
