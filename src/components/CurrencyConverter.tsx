@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Block} from "./Block.tsx";
 import ResultBlock from "./ResultBlock.tsx";
 import {recalculateValues} from "../utils/recalculateValues.ts";
+import {fetchRates} from "../api/query/getRates.ts";
 
 export type RatesData = {
     [key: string]: number;
@@ -14,7 +15,7 @@ const CurrencyConverter: React.FC = () => {
     const [secondaryCurrencies, setSecondaryCurrencies] = useState(['PLN', 'BRL', 'CAD', 'DKK']);
     const [primaryCurrency, setPrimaryCurrency] = useState('USD');
     const [secondaryCurrency, setSecondaryCurrency] = useState('PLN');
-    const [primaryValue, setPrimaryValue] = useState(0);
+    const [primaryValue, setPrimaryValue] = useState(1);
     const [secondaryValue, setSecondaryValue] = useState(0);
     const changePrimaryValue = (value: number) => {
         if (!rates[primaryCurrency] || !rates[secondaryCurrency]) return;
@@ -27,55 +28,43 @@ const CurrencyConverter: React.FC = () => {
     const onChangePrimaryCurrency = (cur: string) => {
         setPrimaryCurrency(cur);
         recalculateValues(cur, secondaryCurrency, primaryValue, rates, setSecondaryValue);
-      
+
         if (primaryCurrencies.includes(cur)) return;
-        const updated=[...primaryCurrencies];
+        const updated = [...primaryCurrencies];
         const activeIndex = updated.indexOf(primaryCurrency);
-        if(activeIndex !== -1){
+        if (activeIndex !== -1) {
             updated[activeIndex] = cur;
-        }else{
+        } else {
             updated.unshift(cur);
         }
         const withoutDuplicates = updated.filter(
             (item, index) => updated.indexOf(item) === index
         );
-        setPrimaryCurrencies(withoutDuplicates.slice(0,4))
+        setPrimaryCurrencies(withoutDuplicates.slice(0, 4))
     };
     const onChangeSecondaryCurrency = (cur: string) => {
         setSecondaryCurrency(cur);
         recalculateValues(primaryCurrency, cur, primaryValue, rates, setSecondaryValue);
-        
+
         if (secondaryCurrencies.includes(cur)) return;
-        
         const updated = [...secondaryCurrencies];
-        
         const activeIndex = updated.indexOf(secondaryCurrency);
         if (activeIndex !== -1) {
             updated[activeIndex] = cur;
         } else {
-            /** if something was wrong we push to the start  */
+            /** if something was wrong, we push to the start  */
             updated.unshift(cur);
         }
         /** delete twins */
         const withoutDuplicates = updated.filter((item, index) => updated.indexOf(item) === index);
-        
+
         setSecondaryCurrencies(withoutDuplicates.slice(0, 4));
     };
-
+    /** fetching currencies */
     useEffect(() => {
-        fetch("https://api.frankfurter.app/latest")
-            .then((res) => res.json())
-            .then((data) => {
-                const updatedRates = {...data.rates, USD: 1};
-                setRates(updatedRates);
-                setTimeout(() => {
-                    recalculateValues(primaryCurrency, secondaryCurrency, primaryValue || 1, rates, setSecondaryValue);
-                }, 0);
-            })
-            .catch((err) => {
-                console.warn(err);
-                alert("Error fetching rates.");
-            });
+        fetchRates(setRates, () =>
+            recalculateValues(primaryCurrency, secondaryCurrency, primaryValue || 1, rates, setSecondaryValue)
+        );
     }, []);
 
     /** recount from primary  */
