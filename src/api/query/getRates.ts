@@ -1,10 +1,16 @@
-
-
-// async function getRates() {
-//     try {
-//         const response = await fetch('https://api.frankfurter.app/latest')
-//         return response.json()
-//     }catch (e) {
-//         console.log(e)
-//     }
-// } 
+export const fetchRates = async (
+    setRates: (rates: Record<string, number>) => void,
+    recalculate: () => void
+) => {
+    try {
+        
+        const res = await fetch("https://api.frankfurter.app/latest");
+        const data = await res.json();
+        const updatedRates = { ...data.rates, USD: 1 };
+        setRates(updatedRates);
+        setTimeout(recalculate, 0);
+    } catch (err) {
+        console.warn(err);
+        alert("Error fetching rates.");
+    }
+};

@@ -3,13 +3,12 @@ import DropDown from "./DropDown.tsx";
 
 
 interface BlockProps {
-    value: any;
+    value: number;
     currency: string;
-    onChangeValue: any;
+    onChangeValue: (value:number)=>void;
     onChangeCurrency: (currency: string) => void;
     defaultCurrencies: string[];
     dropDownItems: string[];
-   // onReplaceCurrency: any;
     isSecondary?: boolean;
 }
 
@@ -21,7 +20,6 @@ export const Block = ({
                           value,
                           currency,
                           dropDownItems,
-                         // onReplaceCurrency,
                           isSecondary = false
                       }: BlockProps) => {
     const [isOpen, setIsOpen] = useState(false);
