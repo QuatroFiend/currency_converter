@@ -39,8 +39,11 @@ export const Block = ({
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
-    const isMobile=useMedia(768)
+    const isMobile=useMedia(860)
     let flexibleCurrenciesArray=isMobile ? defaultCurrencies.slice(0,3) : defaultCurrencies.slice(0,4)
+    if (isMobile && !flexibleCurrenciesArray.includes(currency)) {
+        flexibleCurrenciesArray[0] = currency;
+    }
     return (
         <div className="block">
             <ul className="currencies-list">

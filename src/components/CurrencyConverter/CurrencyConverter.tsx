@@ -74,10 +74,19 @@ const CurrencyConverter: React.FC = () => {
             recalculateValues(primaryCurrency, secondaryCurrency, primaryValue, rates, setSecondaryValue);
         }
     }, [primaryCurrency, secondaryCurrency, primaryValue, rates]);
+    const today = new Date().toISOString().split('T')[0];
 
     useEffect(() => {
         setSecondaryValue(secondaryValue);
     }, [secondaryCurrency, secondaryValue])
+    fetch(`https://api.frankfurter.app/${today}?from=USD&to=EUR`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.rates.EUR);
+        })
+        .catch(error => {
+            console.error('Error fetching currency data:', error);
+        });
     return (
         <div className="block-container">
             <Block
@@ -89,8 +98,8 @@ const CurrencyConverter: React.FC = () => {
                 dropDownItems={itemsForDropDown}
                 isSecondary={false}
             />
-            <div className="lg:flex hidden w-[2px] h-[140px] bg-[#444]"/>
-            <div className="lg:hidden flex w-full h-[2px] bg-[#444]"/>
+            <div className="md:flex hidden w-[2px] h-[140px] bg-[#444]"/>
+        <div className="md:hidden flex  w-full h-[2px] bg-[#444]"/>
             <ResultBlock
                 currency={secondaryCurrency}
                 onChangeCurrency={onChangeSecondaryCurrency}

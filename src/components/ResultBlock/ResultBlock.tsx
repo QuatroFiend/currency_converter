@@ -42,8 +42,12 @@ const ResultBlock = ({
     const formattedValue = typeof value === 'number' ?
         value.toFixed(value.toString().includes('.') ? 2 : 0) :
         '0.00';
-    const isMobile = useMedia(768)
+    const isMobile = useMedia(860)
     let flexibleCurrenciesArray = isMobile ? secondaryCurrencies.slice(0, 3) : secondaryCurrencies.slice(0, 4)
+
+    if (isMobile && !flexibleCurrenciesArray.includes(currency)) {
+        flexibleCurrenciesArray[0] = currency;
+    }
     return (
         <div className="block" ref={blockRef}>
             <div className="flex flex-row justify-between">

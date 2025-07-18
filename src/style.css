@@ -103,7 +103,7 @@ h1 {
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .block-container{
     flex-direction: column;
     padding: 30px 40px;
