@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
-import DropDown from "./DropDown.tsx";
+import DropDown from "../DropDown/DropDown.tsx";
+import {useMedia} from "../../customHooks/useIsMobile/useMedia.ts";
 
 
 interface BlockProps {
@@ -38,11 +39,12 @@ export const Block = ({
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
-
+    const isMobile=useMedia(768)
+    let flexibleCurrenciesArray=isMobile ? defaultCurrencies.slice(0,3) : defaultCurrencies.slice(0,4)
     return (
         <div className="block">
             <ul className="currencies-list">
-                {defaultCurrencies.map((i) => (
+                {flexibleCurrenciesArray.map((i) => (
                     <li
                         className={`currency-item ${i === currency ? "active" : ""}`}
                         onClick={() => onChangeCurrency(i)}
