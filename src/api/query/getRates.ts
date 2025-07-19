@@ -3,7 +3,6 @@ export const fetchRates = async (
     recalculate: () => void
 ) => {
     try {
-        
         const res = await fetch("https://api.frankfurter.app/latest");
         const data = await res.json();
         const updatedRates = { ...data.rates, USD: 1 };

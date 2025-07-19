@@ -3,6 +3,7 @@ import {recalculateValues} from "../../utils/recalculateValues.ts";
 import {fetchRates} from "../../api/query/getRates.ts";
 import {Block} from "../CurrencyBlock/Block.tsx";
 import ResultBlock from "../ResultBlock/ResultBlock.tsx";
+import {getCurrencyRange} from "../../api/query/getCurrencyRange.ts";
 
 export type RatesData = {
     [key: string]: number;
@@ -74,19 +75,13 @@ const CurrencyConverter: React.FC = () => {
             recalculateValues(primaryCurrency, secondaryCurrency, primaryValue, rates, setSecondaryValue);
         }
     }, [primaryCurrency, secondaryCurrency, primaryValue, rates]);
-    const today = new Date().toISOString().split('T')[0];
 
     useEffect(() => {
         setSecondaryValue(secondaryValue);
     }, [secondaryCurrency, secondaryValue])
-    fetch(`https://api.frankfurter.app/${today}?from=USD&to=EUR`)
-        .then(response => response.json())
-        .then(data => {
-            console.log(data.rates.EUR);
-        })
-        .catch(error => {
-            console.error('Error fetching currency data:', error);
-        });
+
+    const day=getCurrencyRange(primaryCurrency,secondaryCurrency)
+    console.log(day)
     return (
         <div className="block-container">
             <Block
