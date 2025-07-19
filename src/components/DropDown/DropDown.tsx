@@ -1,5 +1,6 @@
-import arrow from "../../public/arrow.svg";
+import arrow from "../../../public/arrow.svg";
 import React from "react";
+
 interface DropDownProps {
     isOpen: boolean;
     items: string[];

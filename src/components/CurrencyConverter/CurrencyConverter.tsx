@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {Block} from "./Block.tsx";
-import ResultBlock from "./ResultBlock.tsx";
-import {recalculateValues} from "../utils/recalculateValues.ts";
-import {fetchRates} from "../api/query/getRates.ts";
+import {recalculateValues} from "../../utils/recalculateValues.ts";
+import {fetchRates} from "../../api/query/getRates.ts";
+import {Block} from "../CurrencyBlock/Block.tsx";
+import ResultBlock from "../ResultBlock/ResultBlock.tsx";
 
 export type RatesData = {
     [key: string]: number;
@@ -28,7 +28,6 @@ const CurrencyConverter: React.FC = () => {
     const onChangePrimaryCurrency = (cur: string) => {
         setPrimaryCurrency(cur);
         recalculateValues(cur, secondaryCurrency, primaryValue, rates, setSecondaryValue);
-
         if (primaryCurrencies.includes(cur)) return;
         const updated = [...primaryCurrencies];
         const activeIndex = updated.indexOf(primaryCurrency);
@@ -42,6 +41,7 @@ const CurrencyConverter: React.FC = () => {
         );
         setPrimaryCurrencies(withoutDuplicates.slice(0, 4))
     };
+
     const onChangeSecondaryCurrency = (cur: string) => {
         setSecondaryCurrency(cur);
         recalculateValues(primaryCurrency, cur, primaryValue, rates, setSecondaryValue);
@@ -60,6 +60,7 @@ const CurrencyConverter: React.FC = () => {
 
         setSecondaryCurrencies(withoutDuplicates.slice(0, 4));
     };
+
     /** fetching currencies */
     useEffect(() => {
         fetchRates(setRates, () =>
@@ -73,11 +74,19 @@ const CurrencyConverter: React.FC = () => {
             recalculateValues(primaryCurrency, secondaryCurrency, primaryValue, rates, setSecondaryValue);
         }
     }, [primaryCurrency, secondaryCurrency, primaryValue, rates]);
+    const today = new Date().toISOString().split('T')[0];
 
     useEffect(() => {
         setSecondaryValue(secondaryValue);
     }, [secondaryCurrency, secondaryValue])
-
+    fetch(`https://api.frankfurter.app/${today}?from=USD&to=EUR`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.rates.EUR);
+        })
+        .catch(error => {
+            console.error('Error fetching currency data:', error);
+        });
     return (
         <div className="block-container">
             <Block
@@ -89,7 +98,8 @@ const CurrencyConverter: React.FC = () => {
                 dropDownItems={itemsForDropDown}
                 isSecondary={false}
             />
-            <div className="divider"/>
+            <div className="md:flex hidden w-[2px] h-[140px] bg-[#444]"/>
+        <div className="md:hidden flex  w-full h-[2px] bg-[#444]"/>
             <ResultBlock
                 currency={secondaryCurrency}
                 onChangeCurrency={onChangeSecondaryCurrency}

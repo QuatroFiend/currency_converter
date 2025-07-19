@@ -1,6 +1,6 @@
 import React from 'react'
 import './style.css'
-import CurrencyConverter from './components/CurrencyConverter'
+import CurrencyConverter from "./components/CurrencyConverter/CurrencyConverter.tsx";
 
 const App: React.FC = () => {
   return (

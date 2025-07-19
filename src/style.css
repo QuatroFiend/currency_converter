@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -51,7 +53,7 @@ h1 {
   text-align: center;
   display: flex;
   flex-direction: column;
-  min-height: 80vh;
+  min-height: 100vh;
   justify-content: space-between;
 }
 .divider{
@@ -100,6 +102,21 @@ h1 {
   background-color: #646cff;
   color: white;
   border-color: #646cff;
+}
+
+
+@media (max-width: 767px) {
+  .block-container{
+    flex-direction: column;
+    padding: 30px 40px;
+    gap:20px;
+  }
+  .divider{
+    display: none;
+  }
+  .currencies-list {
+    align-self: flex-start;
+  }
 }
 
 @media (prefers-color-scheme: light) {
