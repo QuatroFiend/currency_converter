@@ -8,8 +8,7 @@ interface CurrencyGraphProps {
   secondaryCurrency: string;
 }
 
-export  const tabs = ["Week", "Two weeks", "Month", "Year"];
-
+export const tabs = ["Week", "Two weeks", "Month", "Year"];
 
 const CurrencyGrapth = ({
   primaryCurrency,
@@ -26,10 +25,14 @@ const CurrencyGrapth = ({
   });
 
   return (
-    <div className="w-full h-full p-4 bg-[#2f2f2f] rounded-lg shadow-md mt-[50px]">
-      {/* <h1>Currency rate Graph</h1> */}
-      <Tabs tabs={tabs} activeTab={activeTab} onChangeTab={onChangeTab} />
-      <Line data={data} options={options} />
+    <div className="relative w-full h-[320px] sm:h-[350px] md:h-[500px] p-4 rounded-lg shadow-md mt-[50px] flex justify-center items-center overflow-hidden">
+      <div className="absolute inset-0 bg-[#2f2f2f] rounded-lg z-0" />
+      <div className="relative w-full h-full z-10 flex flex-col">
+        <Tabs tabs={tabs} activeTab={activeTab} onChangeTab={onChangeTab} />
+        <div className="flex-1">
+          <Line data={data} options={options} />
+        </div>
+      </div>
     </div>
   );
 };
