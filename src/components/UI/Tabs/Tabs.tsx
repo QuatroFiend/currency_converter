@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import clsx from "clsx";
+import { useMedia } from "../../../customHooks/useIsMobile/useMedia";
 
 interface TabsProps {
   tabs: string[];
@@ -10,6 +11,7 @@ interface TabsProps {
 const Tabs = ({ tabs, activeTab, onChangeTab }: TabsProps) => {
   const [underlineStyle, setUnderlineStyle] = useState({});
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const isMobile = useMedia(480);
 
   useEffect(() => {
     const idx = tabs.indexOf(activeTab);
@@ -18,12 +20,13 @@ const Tabs = ({ tabs, activeTab, onChangeTab }: TabsProps) => {
       setUnderlineStyle({
         left: currentTab.offsetLeft,
         width: currentTab.offsetWidth,
+        top: currentTab.offsetTop + currentTab.offsetHeight - 2,
       });
     }
-  }, [activeTab, tabs]);
+  }, [activeTab, tabs, isMobile]);
 
-  return (
-    <div className="relative bg-transparent flex justify-around items-center p-4">
+  const mobileTabs = (
+    <div className="relative grid grid-cols-2 gap-2 pb-4">
       {tabs.map((tab, idx) => (
         <button
           key={tab}
@@ -32,7 +35,34 @@ const Tabs = ({ tabs, activeTab, onChangeTab }: TabsProps) => {
           }}
           className={clsx(
             activeTab === tab ? "text-[#646cffe5] font-bold" : "text-white",
-            "bg-transparent rounded-lg hover:text-[#646cffe5] transition-colors duration-600 flex items-center justify-center text-lg px-4 py-2"
+            "bg-transparent rounded-lg hover:text-[#646cffe5] transition-colors duration-300 flex items-center justify-center text-lg px-4 py-2"
+          )}
+          onClick={() => onChangeTab(tab)}
+        >
+          {tab}
+        </button>
+      ))}
+      <span
+        className="absolute h-[2px] bg-[#646cffe5] transition-all duration-300"
+        style={{
+          ...underlineStyle,
+          position: "absolute",
+        }}
+      />
+    </div>
+  );
+
+  const desktopTabs = (
+    <div className="relative flex justify-around items-center pb-4">
+      {tabs.map((tab, idx) => (
+        <button
+          key={tab}
+          ref={(el) => {
+            tabRefs.current[idx] = el;
+          }}
+          className={clsx(
+            activeTab === tab ? "text-[#646cffe5] font-bold" : "text-white",
+            "bg-transparent rounded-lg hover:text-[#646cffe5] transition-colors duration-300 flex items-center justify-center lg:text-[18px] text-[16px] px-4 py-2"
           )}
           onClick={() => onChangeTab(tab)}
         >
@@ -48,6 +78,8 @@ const Tabs = ({ tabs, activeTab, onChangeTab }: TabsProps) => {
       />
     </div>
   );
+
+  return isMobile ? mobileTabs : desktopTabs;
 };
 
 export default Tabs;

@@ -53,6 +53,7 @@ export const useGrapth = ({
   const options = {
     responsive: true,
     pointStyle: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
       title: {
