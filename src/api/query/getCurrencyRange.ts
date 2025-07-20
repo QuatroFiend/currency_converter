@@ -51,7 +51,7 @@ export const getCurrencyRange = async (
     const data = await res.json();
     const dataRates = Object.entries(data.rates).map(([key, value]) => ({
       date: key,
-      value: value[secondaryCurrency],
+      value: (value as Record<string, number>)[secondaryCurrency],
     }));
     return dataRates;
   } catch (err) {

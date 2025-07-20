@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Line } from "react-chartjs-2";
 import { useGrapth } from "../../customHooks/useGraph/useGraphData";
 import Tabs from "../UI/Tabs/Tabs";
