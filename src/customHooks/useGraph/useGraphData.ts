@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { getCurrencyRange } from "../../api/query/getCurrencyRange";
 import {
   Chart as ChartJS,
   LineElement,
@@ -10,6 +9,7 @@ import {
   Legend,
   Title,
 } from "chart.js";
+import { getCurrencyRange } from "../../api/requests/getCurrencyRange";
 
 interface GrathProps {
   primaryCurrency: string;
@@ -40,13 +40,8 @@ export const useGrapth = ({
         label: `${primaryCurrency} to ${secondaryCurrency}`,
         data: rangeData.map((item) => item.value),
         borderColor: "#646cffe5",
-        // backgroundColor:  "rgba(129, 135, 255, 0.95)",
-        // pointStyle: "circle",
-        // pointRadius: 10,
         pointHoverRadius: 15,
         pointBorderColor: "#646cffe5",
-        //pointBackgroundColor: "#646cffe5",
-        //pointBorderWidth: 2,
       },
     ],
   };

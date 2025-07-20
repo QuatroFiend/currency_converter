@@ -1,4 +1,4 @@
-import { tabs } from "../../components/CurrencyGrapth/CurrencyGrapth";
+import { GRAPTH_RANGE_TABS } from "../../constants/CurrencyGrapthVariabels/CurrencyGrapth.constants";
 
 export const getCurrencyRange = async (
   primaryCurrency: string,
@@ -18,16 +18,16 @@ export const getCurrencyRange = async (
   let startDate;
 
   switch (activeTab) {
-    case tabs[0]: // "Week"
+    case GRAPTH_RANGE_TABS[0]: 
       startDate = weekRange;
       break;
-    case tabs[1]:
+    case GRAPTH_RANGE_TABS[1]:
       startDate = twoWeeksRange;
       break;
-    case tabs[2]:
+    case GRAPTH_RANGE_TABS[2]:
       startDate = monthRange;
       break;
-    case tabs[3]:
+    case GRAPTH_RANGE_TABS[3]:
       startDate = yearRange;
       break;
     default:

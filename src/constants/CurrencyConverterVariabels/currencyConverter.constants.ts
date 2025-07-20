@@ -1,0 +1,4 @@
+export const DEFAULT_PRIMARY_CURRENCIES = ["USD", "PLN", "CZK", "AUD"];
+export const DEFAULT_SECONDARY_CURRENCIES = ["PLN", "BRL", "CAD", "DKK"];
+export const DEFAULT_PRIMARY_CURRENCY = "USD";
+export const DEFAULT_SECONDARY_CURRENCY = "PLN";
