@@ -1,4 +1,4 @@
-import type {RatesData} from "../components/CurrencyConverter/CurrencyConverter.tsx";
+import type { RatesData } from "../../customHooks/useCurrencyConverter/useCurrencyConverter";
 
 export const recalculateValues = (
     primCurrency: string, 
