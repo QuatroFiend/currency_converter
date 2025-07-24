@@ -1,34 +1,38 @@
 import React from "react";
-import DropDown from "../DropDown/DropDown.tsx";
-import { useBlock } from "../../customHooks/useBlock/useBlock.ts";
 import clsx from "clsx";
+import { useBlock } from "../../../customHooks/useBlock/useBlock";
+import DropDown from "../../DropDown/DropDown";
 
 interface BlockProps {
   value: number;
   currency: string;
-  onChangeValue?: (value: number) => void;
   onChangeCurrency: (currency: string) => void;
-  defaultCurrencies: string[];
   dropDownItems: string[];
   isSecondary?: boolean;
+  currenciesArray: string[];
+  readonly?: boolean;
+  onChangeValue?: (value: number) => void;
 }
 
-export const Block = ({
-  defaultCurrencies,
-  onChangeCurrency,
-  onChangeValue,
+
+
+const CurrencyBlock = ({
   value,
   currency,
+  onChangeCurrency,
   dropDownItems,
   isSecondary = false,
+  currenciesArray,
+  readonly = false,
+  onChangeValue,
 }: BlockProps) => {
   const { isOpen, toggleDropDown, flexibleCurrenciesArray, blockRef } =
-    useBlock(currency, defaultCurrencies);
+    useBlock(currency, currenciesArray);
   return (
     <div
       className={clsx(
         "flex flex-col justify-center items-center gap-[10px]",
-        "bg-white text-black rounded-[10px] p-6 shadow",
+        "bg-white text-black rounded-[10px] p-6 shadow-[0_4px_10px_4px_rgba(0,0,0,0.1)] shadow-[0_1px_2px_-1px_rgba(0,0,0,0.1)]",
         "dark:bg-[#2f2f2f] dark:text-white"
       )}
       ref={blockRef}
@@ -56,28 +60,18 @@ export const Block = ({
           activeTab={isSecondary ? "secondary" : "primary"}
         />
       </ul>
-      {onChangeValue && (
-        <input
-          className={clsx(
-            "input",
-            "bg-white text-black border-green-500 focus:border-green-600 focus:ring-green-200",
-            "dark:bg-[#242424] dark:text-white dark:border-[#444] dark:focus:border-[#646cff]"
-          )}
-          type="number"
-          value={value}
-          onChange={(e) => onChangeValue(parseFloat(e.target.value))}
-        />
-      )}
       <input
         className={clsx(
           "input",
           "bg-white text-black border-green-500 focus:border-green-600 focus:ring-green-200",
           "dark:bg-[#242424] dark:text-white dark:border-[#444] dark:focus:border-[#646cff]"
         )}
-        type="text"
+        type="number"
         value={value}
-        readOnly
+        onChange={(e) => onChangeValue?.(parseFloat(e.target.value))}
+        readOnly={readonly}
       />
     </div>
   );
 };
+export default CurrencyBlock;

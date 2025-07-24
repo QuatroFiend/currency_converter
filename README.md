@@ -1,7 +1,7 @@
 # Currency Converter
 
 A simple and responsive currency converter app with real-time exchange rates and historical data chart. Built with React, TypeScript, and Vite, using the Frankfurter API for accurate and up-to-date currency information.
-
+![alt text](image-1.png)
 ## Features
 
 - Convert between major world currencies
