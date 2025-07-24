@@ -2,7 +2,6 @@ import React from "react";
 import "./style.css";
 import CurrencyConverter from "./components/CurrencyConverter/CurrencyConverter.tsx";
 import ThemeToggle from "./components/ThemeProvider/ThemeProvider.tsx";
-import { Hint } from "./components/UI/Icons/Hint.tsx";
 
 const App: React.FC = () => {
   return (

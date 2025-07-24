@@ -15,14 +15,14 @@ const ThemeToggle = () => {
           "transition-colors duration-300",
         )}
       >
-        {theme === "dark" && <Moon className="text-white" />}
+        {theme === "dark" && <Moon />}
         <div
           className={clsx(
             "w-[24px] h-[24px] rounded-full bg-white shadow-md flex items-center justify-center transition-all duration-300",
             theme === "dark" ? "translate-x-[3px]" : "translate-x-0"
           )}
         ></div>
-        {theme === "light" && <Sun className="text-yellow-200 size-9"/>}
+        {theme === "light" && <Sun />}
       </button>
     </>
   );
