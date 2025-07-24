@@ -1,5 +1,5 @@
-import arrow from "../../../public/arrow.svg";
 import React from "react";
+import { ArrowIcon } from "../UI/Icons/ArrowIcon";
 
 interface DropDownProps {
   isOpen: boolean;
@@ -8,6 +8,7 @@ interface DropDownProps {
   onChangeCurrency?: (currency: string) => void;
   activeTab?: "primary" | "secondary";
 }
+
 const DropDown = ({
   isOpen,
   items,
@@ -15,7 +16,7 @@ const DropDown = ({
   onChangeCurrency,
 }: DropDownProps) => {
   return (
-    <div className={"relative "}>
+    <div className={"relative"}>
       <div
         className={`
                 p-[10px] cursor-pointer ${
@@ -24,14 +25,14 @@ const DropDown = ({
                 `}
         onClick={toggleDropDown}
       >
-        <img src={arrow} alt="arrow" />
+        <ArrowIcon className="text-green-400 dark:text-[#646cff] transition-colors duration-200" />
       </div>
       {isOpen && (
-        <ul className="bg-[#444] w-[80px] absolute h-[210px] overflow-auto transition duration-200 ease-in-out rounded-[6px] z-10">
+        <ul className="z-10  bg-[#e5e7eb] dark:bg-[#444] w-[80px] absolute h-[210px] overflow-auto transition duration-200 ease-in-out rounded-[6px]">
           {items.map((i) => (
             <li
               className={
-                "px-[4px] flex hover:bg-[#747bff] cursor-pointer duration-200 ease-in-out"
+                "px-[4px] flex hover:bg-green-400  dark:hover:bg-[#747bff] cursor-pointer duration-200 ease-in-out"
               }
               key={i}
               onClick={() => {

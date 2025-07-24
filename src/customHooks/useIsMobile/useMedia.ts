@@ -16,6 +16,7 @@ export const useMedia = (breakpoint: number) => {
             window.removeEventListener('resize', handleResize);
         };
     }, [breakpoint]);
-
+    console.log(isMobile);
+    
     return isMobile;
 };

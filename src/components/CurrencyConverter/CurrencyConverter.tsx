@@ -1,13 +1,13 @@
 import React from "react";
-import { Block } from "../CurrencyBlock/Block.tsx";
-import ResultBlock from "../ResultBlock/ResultBlock.tsx";
 import CurrencyGrapth from "../CurrencyGrapth/CurrencyGrapth.tsx";
 import SplitBar from "../SplitBar/Splitbar.tsx";
 import { useCurrencyConverter } from "../../customHooks/useCurrencyConverter/useCurrencyConverter.ts";
-
+import CurrencyBlock from "../UI/CurrencyBlock/CurrencyBlock.tsx";
+import clsx from "clsx";
 
 const CurrencyConverter: React.FC = () => {
- const {  primaryCurrencies,
+  const {
+    primaryCurrencies,
     secondaryCurrencies,
     primaryCurrency,
     secondaryCurrency,
@@ -16,27 +16,30 @@ const CurrencyConverter: React.FC = () => {
     itemsForDropDown,
     changePrimaryValue,
     onChangePrimaryCurrency,
-    onChangeSecondaryCurrency}=useCurrencyConverter();
+    onChangeSecondaryCurrency,
+  } = useCurrencyConverter();
   return (
     <>
-      <div className="block-container">
-        <Block
+      <div className={clsx("flex flex-row gap-[50px] bg-white dark:bg-[#2f2f2f] text-black dark:text-white rounded-[10px] p-6 shadow-[0_4px_10px_5px_rgba(0,0,0,0.1)] shadow-[0_1px_2px_-1px_rgba(0,0,0,0.1)]")}>
+        <CurrencyBlock
+          value={primaryValue}
           currency={primaryCurrency}
           onChangeCurrency={onChangePrimaryCurrency}
-          onChangeValue={changePrimaryValue}
-          value={primaryValue}
-          defaultCurrencies={primaryCurrencies}
           dropDownItems={itemsForDropDown}
           isSecondary={false}
+          currenciesArray={primaryCurrencies}
+          onChangeValue={changePrimaryValue}
+          readonly={false}
         />
         <SplitBar />
-        <ResultBlock
+        <CurrencyBlock
+          value={secondaryValue}
           currency={secondaryCurrency}
           onChangeCurrency={onChangeSecondaryCurrency}
-          value={secondaryValue}
           dropDownItems={itemsForDropDown}
           isSecondary={true}
-          secondaryCurrencies={secondaryCurrencies}
+          currenciesArray={secondaryCurrencies}
+          readonly={true}
         />
       </div>
       <CurrencyGrapth
