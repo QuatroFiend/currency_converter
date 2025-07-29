@@ -1,22 +1,23 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
+export const useMediaQuery = (breakpoint: number): boolean => {
+  const query = `(max-width: ${breakpoint}px)`;
+  const [matches, setMatches] = useState(false);
 
-export const useMedia = (breakpoint: number) => {
-    const [isMobile, setIsMobile] = useState(() => window.innerWidth < breakpoint);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
 
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth < breakpoint);
-        };
+    const mediaQuery = window.matchMedia(query);
 
-        window.addEventListener('resize', handleResize);
-        handleResize();
+    const updateMatch = () => setMatches(mediaQuery.matches);
+    updateMatch();
 
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, [breakpoint]);
-    console.log(isMobile);
-    
-    return isMobile;
+    mediaQuery.addEventListener("change", updateMatch);
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateMatch);
+    };
+  }, [query]);
+
+  return matches;
 };

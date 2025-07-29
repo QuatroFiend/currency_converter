@@ -12,5 +12,4 @@ export const recalculateValues = (
     const result = eurValue * rates[secCurrency];
     const formattedResult = Number(result.toFixed(result * 100 % 1 === 0 ? 0 : 2));
     setSecondaryValue(formattedResult);
-    console.log(`Конвертация: ${value} ${primCurrency} = ${formattedResult} ${secCurrency}`);
 };

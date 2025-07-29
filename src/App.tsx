@@ -8,14 +8,15 @@ const App: React.FC = () => {
     <>
       <div className=" flex justify-end items-center gap-4 pt-4">
         {/* <Hint /> */}
-        <ThemeToggle />
+      
       </div>
-      <div className="app-container">
+      <div className="app-container min-h-screen">
         <main
           style={{
             margin: "auto",
           }}
         >
+            <ThemeToggle />
           <CurrencyConverter />
         </main>
       </div>
