@@ -11,7 +11,7 @@ const ThemeToggle = () => {
       <button
         onClick={toggleTheme}
         className={clsx(
-          "w-[60px] h-[32px] rounded-full px-1 flex items-center bg-gray-800",
+          "w-[60px] h-[32px] rounded-full px-1 flex items-center bg-[#444]",
           "transition-colors duration-300",
         )}
       >

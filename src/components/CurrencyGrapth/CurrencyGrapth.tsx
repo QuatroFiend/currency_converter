@@ -24,9 +24,9 @@ const CurrencyGrapth = ({
   });
 
   return (
-    <div className="relative sm:w-full w-max h-auto sm:h-[350px] md:h-[500px] p-4 rounded-lg shadow-[0_4px_10px_6px_rgba(0,0,0,0.1)] shadow-[0_1px_2px_-1px_rgba(0,0,0,0.1)] mt-[50px] flex justify-center items-center overflow-hidden">
+    <div className="pb-[50px] relative lg:w-full sm:w-[99%] w-max h-full sm:h-[350px] md:h-[500px] p-4 rounded-lg shadow-[0_4px_10px_6px_rgba(0,0,0,0.1)] shadow-[0_1px_2px_-1px_rgba(0,0,0,0.1)] mt-[50px] flex justify-center items-center overflow-hidden">
       <div className="bg-white absolute inset-0 dark:bg-[#2f2f2f] rounded-lg z-0" />
-      <div className="relative w-full h-full  z-9 flex flex-col">
+      <div className="relative w-full sm:h-full h-[500px] z-9 flex flex-col">
         <Tabs
           tabs={GRAPTH_RANGE_TABS}
           activeTab={activeTab}
