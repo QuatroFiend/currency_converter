@@ -83,7 +83,17 @@ export const useGrapth = ({
         },
       },
       scales: {
-        x: { title: { display: false, text: "Date" } },
+        x: {
+          title: {
+            display: false,
+            text: "Date",
+          },
+          ticks: {
+            maxRotation: 45,
+            minRotation: 30,
+            autoSkip: true,
+          },
+        },
         y: { title: { display: false, text: "Rate" } },
       },
     }),

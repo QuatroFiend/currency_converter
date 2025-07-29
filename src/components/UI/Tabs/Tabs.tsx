@@ -11,7 +11,7 @@ interface TabsProps {
 const Tabs = ({ tabs, activeTab, onChangeTab }: TabsProps) => {
   const [underlineStyle, setUnderlineStyle] = useState({});
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const isMobile = useMediaQuery(480);
+  const isMobile = useMediaQuery(767);
 
   useEffect(() => {
     const idx = tabs.indexOf(activeTab);
