@@ -9,7 +9,6 @@ export const fetchRates = async (
     setRates(updatedRates);
     setTimeout(recalculate, 0);
   } catch (err) {
-    console.warn(err);
     alert("Error fetching rates.");
   }
 };

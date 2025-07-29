@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { adjustVisibleCurrencies } from "../../utils/adjustVisibleCurrencies/adjustVisibleCurrencies";
-import { useMedia } from "../useIsMobile/useMedia";
+import { useMediaQuery } from "../useIsMobile/useMedia";
 
 export const useBlock = (currency: string, secondaryCurrencies: string[]) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,7 +9,7 @@ export const useBlock = (currency: string, secondaryCurrencies: string[]) => {
   const flexibleCurrenciesArray = adjustVisibleCurrencies(
     currency,
     secondaryCurrencies,
-    useMedia(860)
+    useMediaQuery(860)
   );
 
   const toggleDropDown = () => {

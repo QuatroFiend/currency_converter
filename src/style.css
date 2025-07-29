@@ -17,7 +17,6 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -43,8 +42,9 @@ a:hover {
 body {
   margin: 0;
   place-items: center;
-  min-width: 320px;
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 h1 {
@@ -124,7 +124,7 @@ h1 {
 @media (max-width: 767px) {
   .block-container {
     flex-direction: column;
-    padding: 30px 40px;
+   padding: 16px;
     gap: 20px;
   }
   .divider {
