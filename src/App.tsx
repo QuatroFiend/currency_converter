@@ -2,8 +2,9 @@ import React from "react";
 import "./style.css";
 import CurrencyConverter from "./components/CurrencyConverter/CurrencyConverter.tsx";
 import ThemeToggle from "./components/ThemeProvider/ThemeProvider.tsx";
-import { Hint } from "./components/UI/Icons/Hint.tsx";
 import ModalPopUp from "./components/ModalPopUp/ModalPopUp.tsx";
+import { LightBulbIcon } from "@heroicons/react/24/outline";
+import clsx from "clsx";
 
 const App: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -21,7 +22,14 @@ const App: React.FC = () => {
             className="hover:scale-[1.1] transform transition-all duration-300 cursor-pointer"
             onClick={handleHintClick}
           >
-            <Hint />
+            <LightBulbIcon
+              className={clsx(
+                isOpen &&
+                  "text-yellow-500 dark:text-yellow-500 size-9 transition-colors duration-200",
+                "size-8 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200",
+                "dark:text-[#d3d3d3] dark:hover:text-[#fff]"
+              )}
+            />
           </div>
           <ThemeToggle />
         </div>

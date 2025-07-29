@@ -1,8 +1,8 @@
 import React from "react";
 import { useThemeSwitcher } from "../../customHooks/useThemeSwitcher/useThemeSwithcer";
-import { Moon } from "../UI/Icons/Moon";
-import { Sun } from "../UI/Icons/Sun";
 import clsx from "clsx";
+import { SunIcon } from "@heroicons/react/24/outline";
+import { MoonIcon } from "@heroicons/react/24/outline";
 
 const ThemeToggle = () => {
   const { toggleTheme, theme } = useThemeSwitcher();
@@ -15,14 +15,14 @@ const ThemeToggle = () => {
           "transition-colors duration-300",
         )}
       >
-        {theme === "dark" && <Moon />}
+        {theme === "dark" && <MoonIcon className="size-6 text-white" />}
         <div
           className={clsx(
             "w-[24px] h-[24px] rounded-full bg-white shadow-md flex items-center justify-center transition-all duration-300",
             theme === "dark" ? "translate-x-[3px]" : "translate-x-0"
           )}
         ></div>
-        {theme === "light" && <Sun />}
+        {theme === "light" && <SunIcon className="size-6 text-yellow-300" />}
       </button>
     </>
   );

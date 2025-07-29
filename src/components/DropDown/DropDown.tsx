@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowIcon } from "../UI/Icons/ArrowIcon";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
 interface DropDownProps {
   isOpen: boolean;
@@ -25,7 +25,7 @@ const DropDown = ({
                 `}
         onClick={toggleDropDown}
       >
-        <ArrowIcon className="text-green-400 dark:text-[#646cff] transition-colors duration-200" />
+        <ChevronDownIcon className="size-6 text-green-400 dark:text-[#646cff] transition-colors duration-200" />
       </div>
       {isOpen && (
         <ul className="z-10  bg-[#e5e7eb] dark:bg-[#444] w-[80px] absolute h-[210px] overflow-auto transition duration-200 ease-in-out rounded-[6px]">

@@ -22,7 +22,7 @@ const CurrencyConverter: React.FC = () => {
     <>
       <div
         className={clsx(
-          "flex md:flex-row flex-col md:gap-[50px] gap-[20px] bg-white dark:bg-[#2f2f2f] text-black dark:text-white rounded-[10px] p-6 shadow-[0_4px_10px_5px_rgba(0,0,0,0.1)] shadow-[0_1px_2px_-1px_rgba(0,0,0,0.1)]"
+          "flex md:flex-row flex-col md:gap-[50px] gap-[20px] bg-white dark:bg-[#2f2f2f] text-black dark:text-white rounded-[10px] p-6 shadow-[0_4px_10px_5px_rgba(0,0,0,0.1)]"
         )}
       >
         <CurrencyBlock
