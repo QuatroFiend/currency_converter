@@ -1,0 +1,53 @@
+import { GRAPTH_RANGE_TABS } from "../../constants/CurrencyGrapthVariabels/CurrencyGrapth.constants";
+
+export const getCryptoCurrenciesRange = async (
+  primaryCryptoCurrency: string,
+  secondaryCryptoCurrency: string,
+  activeTab: string
+) => {
+  const today = new Date();
+  const weekRange = new Date(today);
+  weekRange.setDate(today.getDate() - 6);
+  const twoWeekRange = new Date(today);
+  twoWeekRange.setDate(today.getDate() - 13);
+  const monthRange = new Date(today);
+  monthRange.setMonth(today.getMonth() - 1);
+  const yearRange = new Date(today);
+  yearRange.setFullYear(today.getFullYear() - 1);
+
+  let startDate;
+
+  switch (activeTab) {
+    case GRAPTH_RANGE_TABS[0]:
+      startDate = weekRange;
+      break;
+    case GRAPTH_RANGE_TABS[1]:
+      startDate = twoWeekRange;
+      break;
+    case GRAPTH_RANGE_TABS[2]:
+      startDate = monthRange;
+      break;
+    case GRAPTH_RANGE_TABS[3]:
+      startDate = yearRange;
+      break;
+    default:
+      startDate = weekRange;
+      break;
+  }
+ const formatDate = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+  const res = await fetch(
+    `https://api.binance.com/api/v3/ticker/price?symbol=${primaryCryptoCurrency}${secondaryCryptoCurrency}`
+  );
+  try {
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.warn(err);
+    alert("Error fetching range.");
+  }
+};

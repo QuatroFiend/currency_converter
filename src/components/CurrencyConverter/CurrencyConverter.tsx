@@ -17,7 +17,20 @@ const CurrencyConverter: React.FC = () => {
     changePrimaryValue,
     onChangePrimaryCurrency,
     onChangeSecondaryCurrency,
+    cryptoRates,
+    primaryCryptoCurrencies,
+    secondaryCryptoCurrencies,
+    primaryCryptoCurrency,
+    secondaryCryptoCurrency,
+    primaryCryptoValue,
+    secondaryCryptoValue,
+    changePrimaryCryptoValue,
+    onChangePrimaryCryptoCurrency,
+    onChangeSecondaryCryptoCurrency,
   } = useCurrencyConverter();
+  console.log(cryptoRates);
+  const cryptoItemsForDropDown = cryptoRates.map((rate) => rate.symbol);
+  const thisIsTest = true;
   return (
     <>
       <div
@@ -26,29 +39,43 @@ const CurrencyConverter: React.FC = () => {
         )}
       >
         <CurrencyBlock
-          value={primaryValue}
-          currency={primaryCurrency}
-          onChangeCurrency={onChangePrimaryCurrency}
-          dropDownItems={itemsForDropDown}
+          value={thisIsTest ? primaryValue : primaryCryptoValue}
+          currency={thisIsTest ? primaryCurrency : primaryCryptoCurrency}
+          onChangeCurrency={
+            thisIsTest ? onChangePrimaryCurrency : onChangePrimaryCryptoCurrency
+          }
+          dropDownItems={thisIsTest ? itemsForDropDown : cryptoItemsForDropDown}
           isSecondary={false}
-          currenciesArray={primaryCurrencies}
-          onChangeValue={changePrimaryValue}
+          currenciesArray={
+            thisIsTest ? primaryCurrencies : primaryCryptoCurrencies
+          }
+          onChangeValue={
+            thisIsTest ? changePrimaryValue : changePrimaryCryptoValue
+          }
           readonly={false}
         />
         <SplitBar />
         <CurrencyBlock
-          value={secondaryValue}
-          currency={secondaryCurrency}
-          onChangeCurrency={onChangeSecondaryCurrency}
-          dropDownItems={itemsForDropDown}
+          value={thisIsTest ? secondaryValue : secondaryCryptoValue}
+          currency={thisIsTest ? secondaryCurrency : secondaryCryptoCurrency}
+          onChangeCurrency={
+            thisIsTest
+              ? onChangeSecondaryCurrency
+              : onChangeSecondaryCryptoCurrency
+          }
+          dropDownItems={thisIsTest ? itemsForDropDown : cryptoItemsForDropDown}
           isSecondary={true}
-          currenciesArray={secondaryCurrencies}
+          currenciesArray={
+            thisIsTest ? secondaryCurrencies : secondaryCryptoCurrencies
+          }
           readonly={true}
         />
       </div>
       <CurrencyGrapth
-        primaryCurrency={primaryCurrency}
-        secondaryCurrency={secondaryCurrency}
+        primaryCurrency={thisIsTest ? primaryCurrency : primaryCryptoCurrency}
+        secondaryCurrency={
+          thisIsTest ? secondaryCurrency : secondaryCryptoCurrency
+        }
       />
     </>
   );

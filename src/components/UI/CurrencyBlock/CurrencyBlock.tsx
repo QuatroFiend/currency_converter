@@ -14,8 +14,6 @@ interface BlockProps {
   onChangeValue?: (value: number) => void;
 }
 
-
-
 const CurrencyBlock = ({
   value,
   currency,
@@ -28,6 +26,7 @@ const CurrencyBlock = ({
 }: BlockProps) => {
   const { isOpen, toggleDropDown, flexibleCurrenciesArray, blockRef } =
     useBlock(currency, currenciesArray);
+  console.log('Current Currency', value, currency);
   return (
     <div
       className={clsx(
