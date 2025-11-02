@@ -17,11 +17,9 @@ export const useCryptoGraph = ({
   activeTab,
 }: GraphProps) => {
   const [stats, setStats] = useState<CandlestickData[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchRange = async () => {
-      setLoading(true);
       try {
         const data = await getCryptoCurrenciesRange(
           primaryCryptoCurrency,
@@ -32,8 +30,6 @@ export const useCryptoGraph = ({
       } catch (error) {
         console.error("Error in useCryptoGraph:", error);
         setStats([]);
-      } finally {
-        setLoading(false);
       }
     };
     fetchRange();
