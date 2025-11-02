@@ -1,73 +1,99 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  Chart as ChartJS,
-  LineElement,
-  PointElement,
-  CategoryScale,
-  LinearScale,
-  Tooltip,
-  Legend,
-  Title,
-} from "chart.js";
-import { getCurrencyRange } from "../../api/requests/getCurrencyRange";
+  getCryptoCurrenciesRange,
+  type CandlestickData,
+} from "../../api/requests/getCryptoCurrenciesRange";
 import { useThemeDetector } from "../useThemeDetector/useThemeDetector";
 
-interface GrathProps {
-  primaryCurrency: string;
-  secondaryCurrency: string;
+interface GraphProps {
+  primaryCryptoCurrency: string;
+  secondaryCryptoCurrency: string;
   activeTab: string;
 }
 
-ChartJS.register(
-  LineElement,
-  PointElement,
-  CategoryScale,
-  LinearScale,
-  Tooltip,
-  Legend,
-  Title
-);
-
-export const useGrapth = ({
-  primaryCurrency,
-  secondaryCurrency,
+export const useCryptoGraph = ({
+  primaryCryptoCurrency,
+  secondaryCryptoCurrency,
   activeTab,
-}: GrathProps) => {
-  const [rangeData, setRangeData] = useState<{ date: string; value: number }[]>(
-    []
-  );
-
-  const isDarkTheme = useThemeDetector();
+}: GraphProps) => {
+  const [stats, setStats] = useState<CandlestickData[]>([]);
 
   useEffect(() => {
     const fetchRange = async () => {
-      const data = await getCurrencyRange(
-        primaryCurrency,
-        secondaryCurrency,
-        activeTab
-      );
-      setRangeData(data ?? []);
+      try {
+        const data = await getCryptoCurrenciesRange(
+          primaryCryptoCurrency,
+          secondaryCryptoCurrency,
+          activeTab
+        );
+        setStats(data);
+      } catch (error) {
+        console.error("Error in useCryptoGraph:", error);
+        setStats([]);
+      }
     };
     fetchRange();
-  }, [primaryCurrency, secondaryCurrency, activeTab]);
+  }, [primaryCryptoCurrency, secondaryCryptoCurrency, activeTab]);
 
-  const data = useMemo(
-    () => ({
-      labels: rangeData.map((item) => item.date),
+  const isDarkTheme = useThemeDetector();
+
+  const data = useMemo(() => {
+    const labels = stats.map((item) => {
+      const date = new Date(item.time);
+
+      if (activeTab === "24h") {
+        return date.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      } else if (activeTab === "Year") {
+        return date.toLocaleDateString("en-US", {
+          month: "short",
+        });
+      } else {
+        return date.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+        });
+      }
+    });
+
+    const prices = stats.map((item) => item.close);
+    const isPositive =
+      prices.length > 0 && prices[prices.length - 1] >= prices[0];
+
+    return {
+      labels,
       datasets: [
         {
-          label: `${primaryCurrency} to ${secondaryCurrency}`,
-          data: rangeData.map((item) => item.value),
+          label: `${primaryCryptoCurrency}/${secondaryCryptoCurrency}`,
+          data: prices,
           borderColor: isDarkTheme ? "#646cffe5" : "rgba(108, 255, 108, 0.84)",
 
           backgroundColor: (context: any) => {
             const ctx = context.chart.ctx;
             const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+            if (isPositive) {
+              gradient.addColorStop(
+                0,
+                isDarkTheme
+                  ? "rgba(16, 185, 129, 0.3)"
+                  : "rgba(16, 185, 129, 0.2)"
+              );
+              gradient.addColorStop(1, "rgba(16, 185, 129, 0)");
+            } else {
+              gradient.addColorStop(
+                0,
+                isDarkTheme
+                  ? "rgba(239, 68, 68, 0.3)"
+                  : "rgba(239, 68, 68, 0.2)"
+              );
+              gradient.addColorStop(1, "rgba(239, 68, 68, 0)");
+            }
             return gradient;
           },
-
           borderWidth: 2,
-          pointRadius: 1,
+          pointRadius: 0,
           pointHoverRadius: 6,
           pointHoverBackgroundColor: isDarkTheme
             ? "#646cffe3"
@@ -80,9 +106,14 @@ export const useGrapth = ({
           tension: 0.4,
         },
       ],
-    }),
-    [rangeData, primaryCurrency, secondaryCurrency, isDarkTheme]
-  );
+    };
+  }, [
+    stats,
+    primaryCryptoCurrency,
+    secondaryCryptoCurrency,
+    isDarkTheme,
+    activeTab,
+  ]);
 
   const options = useMemo(
     () => ({
@@ -93,7 +124,7 @@ export const useGrapth = ({
         title: {
           display: true,
           font: { size: 14 },
-          text: `${primaryCurrency} to ${secondaryCurrency}`,
+          text: `${primaryCryptoCurrency} to ${secondaryCryptoCurrency}`,
           color: isDarkTheme ? "#9ca3af" : "rgba(0, 0, 0, 0.84)",
         },
         tooltip: {
@@ -110,7 +141,9 @@ export const useGrapth = ({
           displayColors: false,
           callbacks: {
             label: (context: any) => {
-              return `${context.parsed.y.toFixed(2)} ${secondaryCurrency}`;
+              return `${context.parsed.y.toFixed(
+                6
+              )} ${secondaryCryptoCurrency}`;
             },
           },
         },
@@ -125,7 +158,7 @@ export const useGrapth = ({
             maxRotation: 45,
             minRotation: 30,
             autoSkip: true,
-            maxTicksLimit: 12,
+            maxTicksLimit: 10,
           },
         },
         y: {
@@ -145,7 +178,7 @@ export const useGrapth = ({
         intersect: false,
       },
     }),
-    [primaryCurrency, secondaryCurrency, isDarkTheme]
+    [primaryCryptoCurrency, secondaryCryptoCurrency, isDarkTheme]
   );
 
   return { data, options };

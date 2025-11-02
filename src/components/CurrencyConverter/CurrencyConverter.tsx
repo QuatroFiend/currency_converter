@@ -4,8 +4,15 @@ import SplitBar from "../SplitBar/Splitbar.tsx";
 import { useCurrencyConverter } from "../../customHooks/useCurrencyConverter/useCurrencyConverter.ts";
 import CurrencyBlock from "../UI/CurrencyBlock/CurrencyBlock.tsx";
 import clsx from "clsx";
+import { CryptoRange } from "../CryptoGraph/CryptoGrapth.tsx";
 
-const CurrencyConverter: React.FC = () => {
+interface CurrencyConverterProps {
+  isCryptoMode?: boolean;
+}
+
+const CurrencyConverter: React.FC<CurrencyConverterProps> = ({
+  isCryptoMode,
+}) => {
   const {
     primaryCurrencies,
     secondaryCurrencies,
@@ -17,6 +24,16 @@ const CurrencyConverter: React.FC = () => {
     changePrimaryValue,
     onChangePrimaryCurrency,
     onChangeSecondaryCurrency,
+    primaryCryptoCurrencies,
+    secondaryCryptoCurrencies,
+    primaryCryptoCurrency,
+    secondaryCryptoCurrency,
+    primaryCryptoValue,
+    secondaryCryptoValue,
+    cryptoItemsForDropDown,
+    changePrimaryCryptoValue,
+    onChangePrimaryCryptoCurrency,
+    onChangeSecondaryCryptoCurrency,
   } = useCurrencyConverter();
   return (
     <>
@@ -26,30 +43,59 @@ const CurrencyConverter: React.FC = () => {
         )}
       >
         <CurrencyBlock
-          value={primaryValue}
-          currency={primaryCurrency}
-          onChangeCurrency={onChangePrimaryCurrency}
-          dropDownItems={itemsForDropDown}
+          value={isCryptoMode ? primaryCryptoValue : primaryValue}
+          currency={isCryptoMode ? primaryCryptoCurrency : primaryCurrency}
+          onChangeCurrency={
+            isCryptoMode
+              ? onChangePrimaryCryptoCurrency
+              : onChangePrimaryCurrency
+          }
+          dropDownItems={
+            isCryptoMode ? cryptoItemsForDropDown : itemsForDropDown
+          }
           isSecondary={false}
-          currenciesArray={primaryCurrencies}
-          onChangeValue={changePrimaryValue}
+          currenciesArray={
+            isCryptoMode ? primaryCryptoCurrencies : primaryCurrencies
+          }
+          onChangeValue={
+            isCryptoMode ? changePrimaryCryptoValue : changePrimaryValue
+          }
           readonly={false}
         />
         <SplitBar />
         <CurrencyBlock
-          value={secondaryValue}
-          currency={secondaryCurrency}
-          onChangeCurrency={onChangeSecondaryCurrency}
-          dropDownItems={itemsForDropDown}
+          value={isCryptoMode ? secondaryCryptoValue : secondaryValue}
+          currency={isCryptoMode ? secondaryCryptoCurrency : secondaryCurrency}
+          onChangeCurrency={
+            isCryptoMode
+              ? onChangeSecondaryCryptoCurrency
+              : onChangeSecondaryCurrency
+          }
+          dropDownItems={
+            isCryptoMode ? cryptoItemsForDropDown : itemsForDropDown
+          }
           isSecondary={true}
-          currenciesArray={secondaryCurrencies}
+          currenciesArray={
+            isCryptoMode ? secondaryCryptoCurrencies : secondaryCurrencies
+          }
           readonly={true}
         />
       </div>
-      <CurrencyGrapth
-        primaryCurrency={primaryCurrency}
-        secondaryCurrency={secondaryCurrency}
-      />
+      {!isCryptoMode ? (
+        <CurrencyGrapth
+          primaryCurrency={
+            isCryptoMode ? primaryCryptoCurrency : primaryCurrency
+          }
+          secondaryCurrency={
+            isCryptoMode ? secondaryCryptoCurrency : secondaryCurrency
+          }
+        />
+      ) : (
+        <CryptoRange
+          primaryCryptoCurrency={primaryCryptoCurrency}
+          secondaryCryptoCurrency={secondaryCryptoCurrency}
+        />
+      )}
     </>
   );
 };
