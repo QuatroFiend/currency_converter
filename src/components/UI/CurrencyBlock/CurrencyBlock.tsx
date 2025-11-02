@@ -26,7 +26,6 @@ const CurrencyBlock = ({
 }: BlockProps) => {
   const { isOpen, toggleDropDown, flexibleCurrenciesArray, blockRef } =
     useBlock(currency, currenciesArray);
-  console.log('Current Currency', value, currency);
   return (
     <div
       className={clsx(
@@ -42,8 +41,17 @@ const CurrencyBlock = ({
             className={clsx(
               "px-[15px] py-2 border border-[#444] rounded-[5px] cursor-pointer transition-all duration-200 font-bold text-[14px]",
               i === currency
-                ? "bg-green-200 text-green-900 border-green-500 dark:bg-[rgba(100,108,255,0.5)] dark:text-white dark:border-[#646cff]"
-                : "hover:bg-green-100 hover:border-green-400 dark:hover:bg-[rgba(100,108,255,0.2)] dark:hover:border-[rgba(100,108,255,0.4)]"
+                ? [
+                    "bg-gradient-to-r from-[rgba(100,255,134,0.4)] to-[rgba(100,255,159,0.7)]",
+                    "dark:bg-gradient-to-r dark:from-[rgba(100,108,255,0.4)] dark:to-[rgba(100,108,255,0.7)]",
+                    "border-2 border-green-500 shadow-[0_0_25px_rgba(34,197,94,0.5)]",
+                    "dark:border-[#646cff] dark:shadow-[0_0_25px_rgba(100,108,255,0.5)]",
+                    "scale-105",
+                  ]
+                : [
+                    "hover:bg-green-100 hover:border-green-400 hover:shadow-[0_0_15px_rgba(34,197,94,0.4)] hover:scale-105",
+                    "dark:hover:bg-[rgba(100,108,255,0.2)] dark:hover:border-[rgba(100,108,255,0.4)] dark:hover:shadow-[0_0_15px_rgba(100,108,255,0.4)]",
+                  ]
             )}
             onClick={() => onChangeCurrency(i)}
             key={i}

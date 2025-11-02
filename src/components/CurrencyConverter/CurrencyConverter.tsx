@@ -4,8 +4,15 @@ import SplitBar from "../SplitBar/Splitbar.tsx";
 import { useCurrencyConverter } from "../../customHooks/useCurrencyConverter/useCurrencyConverter.ts";
 import CurrencyBlock from "../UI/CurrencyBlock/CurrencyBlock.tsx";
 import clsx from "clsx";
+import { CryptoRange } from "../CryptoGraph/CryptoGrapth.tsx";
 
-const CurrencyConverter: React.FC = () => {
+interface CurrencyConverterProps {
+  isCryptoMode?: boolean;
+}
+
+const CurrencyConverter: React.FC<CurrencyConverterProps> = ({
+  isCryptoMode,
+}) => {
   const {
     primaryCurrencies,
     secondaryCurrencies,
@@ -17,20 +24,17 @@ const CurrencyConverter: React.FC = () => {
     changePrimaryValue,
     onChangePrimaryCurrency,
     onChangeSecondaryCurrency,
-    cryptoRates,
     primaryCryptoCurrencies,
     secondaryCryptoCurrencies,
     primaryCryptoCurrency,
     secondaryCryptoCurrency,
     primaryCryptoValue,
     secondaryCryptoValue,
+    cryptoItemsForDropDown,
     changePrimaryCryptoValue,
     onChangePrimaryCryptoCurrency,
     onChangeSecondaryCryptoCurrency,
   } = useCurrencyConverter();
-  console.log(cryptoRates);
-  const cryptoItemsForDropDown = cryptoRates.map((rate) => rate.symbol);
-  const thisIsTest = true;
   return (
     <>
       <div
@@ -39,44 +43,59 @@ const CurrencyConverter: React.FC = () => {
         )}
       >
         <CurrencyBlock
-          value={thisIsTest ? primaryValue : primaryCryptoValue}
-          currency={thisIsTest ? primaryCurrency : primaryCryptoCurrency}
+          value={isCryptoMode ? primaryCryptoValue : primaryValue}
+          currency={isCryptoMode ? primaryCryptoCurrency : primaryCurrency}
           onChangeCurrency={
-            thisIsTest ? onChangePrimaryCurrency : onChangePrimaryCryptoCurrency
+            isCryptoMode
+              ? onChangePrimaryCryptoCurrency
+              : onChangePrimaryCurrency
           }
-          dropDownItems={thisIsTest ? itemsForDropDown : cryptoItemsForDropDown}
+          dropDownItems={
+            isCryptoMode ? cryptoItemsForDropDown : itemsForDropDown
+          }
           isSecondary={false}
           currenciesArray={
-            thisIsTest ? primaryCurrencies : primaryCryptoCurrencies
+            isCryptoMode ? primaryCryptoCurrencies : primaryCurrencies
           }
           onChangeValue={
-            thisIsTest ? changePrimaryValue : changePrimaryCryptoValue
+            isCryptoMode ? changePrimaryCryptoValue : changePrimaryValue
           }
           readonly={false}
         />
         <SplitBar />
         <CurrencyBlock
-          value={thisIsTest ? secondaryValue : secondaryCryptoValue}
-          currency={thisIsTest ? secondaryCurrency : secondaryCryptoCurrency}
+          value={isCryptoMode ? secondaryCryptoValue : secondaryValue}
+          currency={isCryptoMode ? secondaryCryptoCurrency : secondaryCurrency}
           onChangeCurrency={
-            thisIsTest
-              ? onChangeSecondaryCurrency
-              : onChangeSecondaryCryptoCurrency
+            isCryptoMode
+              ? onChangeSecondaryCryptoCurrency
+              : onChangeSecondaryCurrency
           }
-          dropDownItems={thisIsTest ? itemsForDropDown : cryptoItemsForDropDown}
+          dropDownItems={
+            isCryptoMode ? cryptoItemsForDropDown : itemsForDropDown
+          }
           isSecondary={true}
           currenciesArray={
-            thisIsTest ? secondaryCurrencies : secondaryCryptoCurrencies
+            isCryptoMode ? secondaryCryptoCurrencies : secondaryCurrencies
           }
           readonly={true}
         />
       </div>
-      <CurrencyGrapth
-        primaryCurrency={thisIsTest ? primaryCurrency : primaryCryptoCurrency}
-        secondaryCurrency={
-          thisIsTest ? secondaryCurrency : secondaryCryptoCurrency
-        }
-      />
+      {!isCryptoMode ? (
+        <CurrencyGrapth
+          primaryCurrency={
+            isCryptoMode ? primaryCryptoCurrency : primaryCurrency
+          }
+          secondaryCurrency={
+            isCryptoMode ? secondaryCryptoCurrency : secondaryCurrency
+          }
+        />
+      ) : (
+        <CryptoRange
+          primaryCryptoCurrency={primaryCryptoCurrency}
+          secondaryCryptoCurrency={secondaryCryptoCurrency}
+        />
+      )}
     </>
   );
 };

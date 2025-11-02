@@ -9,7 +9,6 @@ export const fetchCryptoCurrenciesRates = async (
 
     const currencies: CryptoCurrencyType[] = [];
 
-    // Сначала добавляем USDT как базовую валюту с ценой 1
     currencies.push({
       symbol: "USDT",
       price: 1

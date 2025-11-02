@@ -5,6 +5,7 @@ import ThemeToggle from "./components/ThemeProvider/ThemeProvider.tsx";
 import ModalPopUp from "./components/ModalPopUp/ModalPopUp.tsx";
 import { LightBulbIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
+import CurrenciesModeTabs from "./components/CurrenciesModeSwitcher/CurrenciesModeTabs.tsx";
 
 const App: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -14,10 +15,15 @@ const App: React.FC = () => {
   const handleHintClose = () => {
     setIsOpen(false);
   };
+  const [isCryptoMode, setIsCryptoMode] = React.useState(false);
   return (
     <>
       <div className="app-container min-h-screen">
         <div className=" flex justify-end items-center gap-4 pb-4">
+          <CurrenciesModeTabs
+            isCryptoMode={isCryptoMode}
+            onModeChange={setIsCryptoMode}
+          />
           <div
             className="hover:scale-[1.1] transform transition-all duration-300 cursor-pointer"
             onClick={handleHintClick}
@@ -38,7 +44,7 @@ const App: React.FC = () => {
             margin: "auto",
           }}
         >
-          <CurrencyConverter />
+          <CurrencyConverter isCryptoMode={isCryptoMode} />
         </main>
       </div>
       {isOpen && <ModalPopUp onClose={handleHintClose} />}

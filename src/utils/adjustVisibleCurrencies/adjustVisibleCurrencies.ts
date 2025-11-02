@@ -1,4 +1,3 @@
-
 export const adjustVisibleCurrencies = (
   currency: string,
   arrayOfCurrencies: string[],

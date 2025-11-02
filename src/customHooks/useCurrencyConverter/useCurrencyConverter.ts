@@ -147,6 +147,8 @@ export const useCurrencyConverter = () => {
   const [primaryCryptoValue, setPrimaryCryptoValue] = useState(1);
   const [secondaryCryptoValue, setSecondaryCryptoValue] = useState(0);
 
+  const cryptoItemsForDropDown = cryptoRates.map((rate) => rate.symbol);
+
   const changePrimaryCryptoValue = (value: number) => {
     console.log("changePrimaryCryptoValue called", {
       value,
@@ -184,7 +186,7 @@ export const useCurrencyConverter = () => {
       secondaryCurrency: secondaryCryptoCurrency,
       primaryRate: primaryRateObj.price,
       secondaryRate: secondaryRateObj.price,
-      valueInUSDT, // добавьте эту строку чтобы видеть промежуточное значение
+      valueInUSDT,
       result,
     });
 
@@ -301,6 +303,7 @@ export const useCurrencyConverter = () => {
     secondaryCryptoCurrency,
     primaryCryptoValue,
     secondaryCryptoValue,
+    cryptoItemsForDropDown,
     changePrimaryCryptoValue,
     onChangePrimaryCryptoCurrency,
     onChangeSecondaryCryptoCurrency,
