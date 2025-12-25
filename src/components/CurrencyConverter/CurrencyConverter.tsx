@@ -37,50 +37,55 @@ const CurrencyConverter: React.FC<CurrencyConverterProps> = ({
   } = useCurrencyConverter();
   return (
     <>
-      <div
-        className={clsx(
-          "flex md:flex-row flex-col md:gap-[50px] gap-[20px] bg-white dark:bg-[#2f2f2f] text-black dark:text-white rounded-[10px] p-6 shadow-[0_4px_10px_5px_rgba(0,0,0,0.1)]"
-        )}
-      >
-        <CurrencyBlock
-          value={isCryptoMode ? primaryCryptoValue : primaryValue}
-          currency={isCryptoMode ? primaryCryptoCurrency : primaryCurrency}
-          onChangeCurrency={
-            isCryptoMode
-              ? onChangePrimaryCryptoCurrency
-              : onChangePrimaryCurrency
-          }
-          dropDownItems={
-            isCryptoMode ? cryptoItemsForDropDown : itemsForDropDown
-          }
-          isSecondary={false}
-          currenciesArray={
-            isCryptoMode ? primaryCryptoCurrencies : primaryCurrencies
-          }
-          onChangeValue={
-            isCryptoMode ? changePrimaryCryptoValue : changePrimaryValue
-          }
-          readonly={false}
-        />
-        <SplitBar />
-        <CurrencyBlock
-          value={isCryptoMode ? secondaryCryptoValue : secondaryValue}
-          currency={isCryptoMode ? secondaryCryptoCurrency : secondaryCurrency}
-          onChangeCurrency={
-            isCryptoMode
-              ? onChangeSecondaryCryptoCurrency
-              : onChangeSecondaryCurrency
-          }
-          dropDownItems={
-            isCryptoMode ? cryptoItemsForDropDown : itemsForDropDown
-          }
-          isSecondary={true}
-          currenciesArray={
-            isCryptoMode ? secondaryCryptoCurrencies : secondaryCurrencies
-          }
-          readonly={true}
-        />
+      <div className="flex justify-center items-center">
+        <div
+          className={clsx(
+            "justify-center w-fit flex md:flex-row flex-col md:gap-[50px] gap-[20px] bg-white dark:bg-[#2f2f2f] text-black dark:text-white rounded-[10px] p-6 shadow-[0_4px_10px_5px_rgba(0,0,0,0.1)]"
+          )}
+        >
+          <CurrencyBlock
+            value={isCryptoMode ? primaryCryptoValue : primaryValue}
+            currency={isCryptoMode ? primaryCryptoCurrency : primaryCurrency}
+            onChangeCurrency={
+              isCryptoMode
+                ? onChangePrimaryCryptoCurrency
+                : onChangePrimaryCurrency
+            }
+            dropDownItems={
+              isCryptoMode ? cryptoItemsForDropDown : itemsForDropDown
+            }
+            isSecondary={false}
+            currenciesArray={
+              isCryptoMode ? primaryCryptoCurrencies : primaryCurrencies
+            }
+            onChangeValue={
+              isCryptoMode ? changePrimaryCryptoValue : changePrimaryValue
+            }
+            readonly={false}
+          />
+          <SplitBar />
+          <CurrencyBlock
+            value={isCryptoMode ? secondaryCryptoValue : secondaryValue}
+            currency={
+              isCryptoMode ? secondaryCryptoCurrency : secondaryCurrency
+            }
+            onChangeCurrency={
+              isCryptoMode
+                ? onChangeSecondaryCryptoCurrency
+                : onChangeSecondaryCurrency
+            }
+            dropDownItems={
+              isCryptoMode ? cryptoItemsForDropDown : itemsForDropDown
+            }
+            isSecondary={true}
+            currenciesArray={
+              isCryptoMode ? secondaryCryptoCurrencies : secondaryCurrencies
+            }
+            readonly={true}
+          />
+        </div>
       </div>
+
       {!isCryptoMode ? (
         <CurrencyGrapth
           primaryCurrency={

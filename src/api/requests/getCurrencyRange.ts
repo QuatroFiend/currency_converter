@@ -1,10 +1,16 @@
 import { GRAPTH_RANGE_TABS } from "../../constants/CurrencyGrapthVariabels/CurrencyGrapth.constants";
+import { validateDifferentCurrencies } from "../../utils/currencyValidation/currencyValidation";
 
 export const getCurrencyRange = async (
   primaryCurrency: string,
   secondaryCurrency: string,
   activeTab: string
 ) => {
+  // If both currencies are the same, return empty array
+  if (!validateDifferentCurrencies(primaryCurrency, secondaryCurrency)) {
+    return [];
+  }
+
   const today = new Date();
   const weekRange = new Date(today);
   weekRange.setDate(today.getDate() - 6);
