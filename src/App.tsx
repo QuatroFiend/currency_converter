@@ -19,29 +19,35 @@ const App: React.FC = () => {
   return (
     <>
       <div className="app-container min-h-screen">
-        <div className=" flex justify-end items-center gap-4 pb-4">
+        <div className="flex flex-col sm:flex-row justify-between sm:justify-end items-end gap-3 sm:gap-4 pb-4 w-full">
+          <div className="flex items-end gap-3 sm:gap-4">
+            <div
+              className="hover:scale-[1.1] transform transition-all duration-300 cursor-pointer"
+              onClick={handleHintClick}
+            >
+              <LightBulbIcon
+                className={clsx(
+                  isOpen &&
+                    "text-yellow-500 dark:text-yellow-500 size-9 transition-colors duration-200",
+                  "size-8 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200",
+                  "dark:text-[#d3d3d3] dark:hover:text-[#fff]"
+                )}
+              />
+            </div>
+            <ThemeToggle />
+          </div>
+        </div>
+        <div className="w-full sm:w-auto flex justify-center sm:justify-center pb-[20px]">
           <CurrenciesModeTabs
             isCryptoMode={isCryptoMode}
             onModeChange={setIsCryptoMode}
           />
-          <div
-            className="hover:scale-[1.1] transform transition-all duration-300 cursor-pointer"
-            onClick={handleHintClick}
-          >
-            <LightBulbIcon
-              className={clsx(
-                isOpen &&
-                  "text-yellow-500 dark:text-yellow-500 size-9 transition-colors duration-200",
-                "size-8 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200",
-                "dark:text-[#d3d3d3] dark:hover:text-[#fff]"
-              )}
-            />
-          </div>
-          <ThemeToggle />
         </div>
         <main
           style={{
             margin: "auto",
+            width: "100%",
+            maxWidth: "100%",
           }}
         >
           <CurrencyConverter isCryptoMode={isCryptoMode} />

@@ -1,4 +1,5 @@
 import { CRYPTO_GRAPTH_RANGE_TABS } from "../../constants/CurrencyGrapthVariabels/CurrencyGrapth.constants";
+import { validateDifferentCurrencies } from "../../utils/currencyValidation/currencyValidation";
 
 export type CandlestickData = {
   time: number;
@@ -14,6 +15,11 @@ export const getCryptoCurrenciesRange = async (
   secondaryCryptoCurrency: string,
   activeTab: string
 ): Promise<CandlestickData[]> => {
+  // If both currencies are the same, return empty array
+  if (!validateDifferentCurrencies(primaryCryptoCurrency, secondaryCryptoCurrency)) {
+    return [];
+  }
+
   let interval: string;
   let limit: number;
 

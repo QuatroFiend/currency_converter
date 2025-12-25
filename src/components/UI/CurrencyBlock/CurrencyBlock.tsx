@@ -27,58 +27,58 @@ const CurrencyBlock = ({
   const { isOpen, toggleDropDown, flexibleCurrenciesArray, blockRef } =
     useBlock(currency, currenciesArray);
   return (
-    <div
-      className={clsx(
-        "flex flex-col justify-center items-center gap-[10px]",
-        "bg-white text-black rounded-[10px] p-6 shadow-[0_4px_10px_4px_rgba(0,0,0,0.1)] shadow-[0_1px_2px_-1px_rgba(0,0,0,0.1)]",
-        "dark:bg-[#2f2f2f] dark:text-white"
-      )}
-      ref={blockRef}
-    >
-      <ul className="flex items-center gap-[10px] mb-[15px] list-none">
-        {flexibleCurrenciesArray.map((i) => (
-          <li
-            className={clsx(
-              "px-[15px] py-2 border border-[#444] rounded-[5px] cursor-pointer transition-all duration-200 font-bold text-[14px]",
-              i === currency
-                ? [
-                    "bg-gradient-to-r from-[rgba(100,255,134,0.4)] to-[rgba(100,255,159,0.7)]",
-                    "dark:bg-gradient-to-r dark:from-[rgba(100,108,255,0.4)] dark:to-[rgba(100,108,255,0.7)]",
-                    "border-2 border-green-500 shadow-[0_0_25px_rgba(34,197,94,0.5)]",
-                    "dark:border-[#646cff] dark:shadow-[0_0_25px_rgba(100,108,255,0.5)]",
-                    "scale-105",
-                  ]
-                : [
-                    "hover:bg-green-100 hover:border-green-400 hover:shadow-[0_0_15px_rgba(34,197,94,0.4)] hover:scale-105",
-                    "dark:hover:bg-[rgba(100,108,255,0.2)] dark:hover:border-[rgba(100,108,255,0.4)] dark:hover:shadow-[0_0_15px_rgba(100,108,255,0.4)]",
-                  ]
-            )}
-            onClick={() => onChangeCurrency(i)}
-            key={i}
-          >
-            <p>{i}</p>
-          </li>
-        ))}
-        <DropDown
-          isOpen={isOpen}
-          items={dropDownItems}
-          toggleDropDown={toggleDropDown}
-          onChangeCurrency={onChangeCurrency}
-          activeTab={isSecondary ? "secondary" : "primary"}
-        />
-      </ul>
-      <input
+      <div
         className={clsx(
-          "input",
-          "bg-white text-black border-green-500 focus:border-green-600 focus:ring-green-200",
-          "dark:bg-[#242424] dark:text-white dark:border-[#444] dark:focus:border-[#646cff]"
+          "flex flex-col justify-center items-center gap-[10px]",
+          "bg-white text-black rounded-[10px] p-6 shadow-[0_4px_10px_4px_rgba(0,0,0,0.1)] shadow-[0_1px_2px_-1px_rgba(0,0,0,0.1)]",
+          "dark:bg-[#2f2f2f] dark:text-white"
         )}
-        type="number"
-        value={value}
-        onChange={(e) => onChangeValue?.(parseFloat(e.target.value))}
-        readOnly={readonly}
-      />
-    </div>
+        ref={blockRef}
+      >
+        <ul className="flex items-center gap-[10px] mb-[15px] list-none">
+          {flexibleCurrenciesArray.map((i) => (
+            <li
+              className={clsx(
+                "px-[15px] py-2 border border-[#444] rounded-[5px] cursor-pointer transition-all duration-200 font-bold text-[14px]",
+                i === currency
+                  ? [
+                      "bg-gradient-to-r from-[rgba(100,255,134,0.4)] to-[rgba(100,255,159,0.7)]",
+                      "dark:bg-gradient-to-r dark:from-[rgba(100,108,255,0.4)] dark:to-[rgba(100,108,255,0.7)]",
+                      "border-2 border-green-500 shadow-[0_0_25px_rgba(34,197,94,0.5)]",
+                      "dark:border-[#646cff] dark:shadow-[0_0_25px_rgba(100,108,255,0.5)]",
+                      "scale-105",
+                    ]
+                  : [
+                      "hover:bg-green-100 hover:border-green-400 hover:shadow-[0_0_15px_rgba(34,197,94,0.4)] hover:scale-105",
+                      "dark:hover:bg-[rgba(100,108,255,0.2)] dark:hover:border-[rgba(100,108,255,0.4)] dark:hover:shadow-[0_0_15px_rgba(100,108,255,0.4)]",
+                    ]
+              )}
+              onClick={() => onChangeCurrency(i)}
+              key={i}
+            >
+              <p>{i}</p>
+            </li>
+          ))}
+          <DropDown
+            isOpen={isOpen}
+            items={dropDownItems}
+            toggleDropDown={toggleDropDown}
+            onChangeCurrency={onChangeCurrency}
+            activeTab={isSecondary ? "secondary" : "primary"}
+          />
+        </ul>
+        <input
+          className={clsx(
+            "input",
+            "bg-white text-black border-green-500 focus:border-green-600 focus:ring-green-200",
+            "dark:bg-[#242424] dark:text-white dark:border-[#444] dark:focus:border-[#646cff]"
+          )}
+          type="number"
+          value={value}
+          onChange={(e) => onChangeValue?.(parseFloat(e.target.value))}
+          readOnly={readonly}
+        />
+      </div>
   );
 };
 export default CurrencyBlock;

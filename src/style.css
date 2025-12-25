@@ -47,6 +47,16 @@ body {
   overflow-x: hidden;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
@@ -62,6 +72,8 @@ h1 {
   flex-direction: column;
   min-height: 100vh;
   justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .divider {
@@ -122,9 +134,12 @@ h1 {
 }
 
 @media (max-width: 767px) {
+  .app-container {
+    padding: 1.5rem 0.5rem;
+  }
   .block-container {
     flex-direction: column;
-   padding: 16px;
+    padding: 16px;
     gap: 20px;
   }
   .divider {
@@ -132,6 +147,24 @@ h1 {
   }
   .currencies-list {
     align-self: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 1rem 0.25rem;
+  }
+  .block-container {
+    padding: 12px;
+  }
+  h1 {
+    font-size: 2em;
+  }
+}
+
+@media (max-width: 360px) {
+  .app-container {
+    padding: 0.75rem 0.25rem;
   }
 }
 
